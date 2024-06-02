@@ -9,14 +9,16 @@ public class CartasMetaphorce {
     
     static List<Carta> Mazo = new ArrayList<>();
     static Stack<Carta> pilaReserva = new Stack();
-    static List<Carta> mazoJ1 = new ArrayList<>();
-    static List<Carta> mazoJ2 = new ArrayList<>();
+    static Jugador jug1 = new Jugador("Gustavo");
+    static Jugador jug2 = new Jugador("Cecilia");
 
     public static void main(String[] args) {
         crearMazo();
         mezclarMazoReserva();
         muestraMazo(Mazo);
+        System.out.println("");
         llenarPilas();
+        iniciaJuego();
     }
     
     public static void crearMazo(){
@@ -51,9 +53,9 @@ public class CartasMetaphorce {
         for(int i = 0; i<4 ; i++){//Se llenan las pilas de los jugadores, son 2 cartas para cada pila
             cartaJugador = pilaReserva.pop();
             if(i<2){
-                mazoJ1.add(cartaJugador);
+                jug1.mazo.add(cartaJugador);
             } else if (i>=2) {
-                mazoJ2.add(cartaJugador);
+                jug2.mazo.add(cartaJugador);
             }        
         }     
     }
@@ -65,31 +67,48 @@ public class CartasMetaphorce {
     
     public static void iniciaJuego(){
         int conteo = 0;
-        for (Carta carta : mazoJ1) { //Se llena la pila de reserva
-            muestraMazo(mazoJ1);
+        System.out.println("Mazo de " + jug1.getNombre());
+        muestraMazo(jug1.mazo);
+        for (Carta carta : jug1.mazo) { //Se llena la pila de reserva
             conteo += carta.getValor();
         }
-        conteoValores(conteo,"Jugador Uno");
         
         int conteo2 = 0;
-        for (Carta carta : mazoJ2) { //Se llena la pila de reserva
-            muestraMazo(mazoJ1);
+        System.out.println("Mazo de " + jug2.getNombre());
+        muestraMazo(jug2.mazo);
+        for (Carta carta : jug2.mazo) { //Se llena la pila de reserva
             conteo2 += carta.getValor();
         }
-        conteoValores(conteo2,"Jugador Dos");
+
+        conteoValores(conteo, jug1.getNombre(), conteo2, jug2.getNombre());
     }
     
-    public static void conteoValores(int conteo, String jugador){
-        if(conteo == 21){
-            System.out.println("Tu puntaje es: " + conteo);
-            System.out.println("¡Felicidades, ya ganaste, " + jugador + "!");
+    public static void conteoValores(int conteoj1, String jugador1, int conteoj2, String jugador2){
+        if(conteoj1 == 21){
+            System.out.println("El puntaje de " + jugador1 + " es: " + conteoj1 + ".");
+            System.out.println("¡Felicidades, ganó " + jugador1 + "!");
             System.exit(0);
-        } else if (conteo > 21) {
-            System.out.println("Ya perdiste.");
+        } else if (conteoj1 > 21) {
+            System.out.println("Ya perdió " + jugador1 + ".");
+            System.out.println("Por lo tanto, ¡felicidades, ganó " + jugador2 + "!");
             System.exit(0);
-        } else {
-            System.out.println("Ni uno ni otro ganó.");
+        }
+
+        if(conteoj2 == 21){
+            System.out.println("El puntaje de " + jugador2 + " es: " + conteoj2 + ".");
+            System.out.println("¡Felicidades, ganó " + jugador2 + "!");
             System.exit(0);
+        } else if (conteoj2 > 21) {
+            System.out.println("Ya perdió " + jugador2 + ".");
+            System.out.println("Por lo tanto, ¡felicidades, ganó " + jugador1 + "!");
+            System.exit(0);
+        }
+        else {
+            if(conteoj1 > conteoj2){
+                System.out.println(jugador1 + " tuvo un puntaje más acercado a 21. ¡" + jugador1 + " ganó!");
+            } else {
+                System.out.println(jugador2 + " tuvo un puntaje más acercado a 21. ¡" + jugador2 + " ganó!");
+            }
         }
     }
 }
